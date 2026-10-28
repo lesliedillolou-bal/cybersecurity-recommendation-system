@@ -29,7 +29,7 @@ A Python-based research project exploring explainable, data-informed cybersecuri
 - [CISA Known Exploited Vulnerabilities (KEV) Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)
 - [CISA KEV JSON feed](https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json)
 
-The app currently loads a local cleaned dataset when available; otherwise it attempts to fetch the official CISA KEV feed. Data availability depends on the local files and internet access.
+The app currently loads a local cleaned dataset when available; otherwise it attempts to fetch the official CISA KEV feed. Data availability depends on the local files and internet access. The separate defensive tool/control catalog is a curated starter dataset with links to official project or framework sources; its matching scores are profile-tag overlap, not evidence of effectiveness.
 
 ## Run the Streamlit app locally
 
@@ -56,6 +56,7 @@ The app includes these pages:
 - **Recommendations:** search the KEV catalog, retrieve similar records, and inspect general defensive controls.
 - **Model Evaluation:** view saved ranking metrics when an evaluation CSV exists.
 - **Feedback & History:** record feedback and export it as CSV for the current session.
+- **Tool & Control Catalog:** browse sourced defensive tools and foundational controls; when a session profile exists, results are ordered using transparent tag-overlap scoring.
 
 If the app cannot reach CISA and no local dataset is available, the dashboard will explain that data could not be loaded. The app does not create fake metrics to fill the gap.
 
@@ -83,7 +84,10 @@ The app can read `data/processed/cisa_kev_cleaned.csv` if you place that output 
 │   ├── Home.py
 │   ├── utils.py
 │   └── pages/
-├── data/                # Local data; raw/processed data is not committed
+├── data/
+│   ├── tool_catalog.csv # Curated defensive tools with official source links
+│   ├── control_catalog.csv
+│   └── README.md        # Catalog schema and sourcing notes
 ├── experiments/         # Reproducible model comparisons
 ├── notebooks/           # Google Colab/Jupyter notebooks
 ├── reports/             # Experiment summaries and figures
@@ -96,7 +100,7 @@ The app can read `data/processed/cisa_kev_cleaned.csv` if you place that output 
 
 ## Project status
 
-**In development.** The initial Streamlit dashboard and pages are in place. The next research phase is to build a sourced defensive-tool/control catalog and define a more rigorous relevance-review protocol before claiming tool-level recommendation performance.
+**In development.** The initial Streamlit dashboard, profile form, CVE similarity page, evaluation view, session feedback page, and sourced defensive tool/control catalog are in place. The catalog is an initial manually curated set and should be expanded and reviewed before drawing conclusions.
 
 ## License
 
