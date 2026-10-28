@@ -2,7 +2,7 @@
 
 A Python-based research project exploring explainable, data-informed cybersecurity recommendations using public vulnerability data. The current prototype uses the CISA Known Exploited Vulnerabilities (KEV) catalog to find similar vulnerability records and suggest general defensive controls.
 
-> **Scope note:** The current app does not rank commercial cybersecurity products. Similarity scores are not probabilities, and general controls must be validated against your environment and authoritative remediation guidance.
+> **Scope note:** The current app does not rank commercial cybersecurity products. Similarity scores are not probabilities, and general controls must be validated against your environment and authoritative remediation guidance. Profile and feedback records can be stored in a local SQLite file; anonymous session IDs scope records in the prototype, but there is no login system and local files may be ephemeral on hosted deployments.
 
 ## Project goals
 
@@ -29,7 +29,7 @@ A Python-based research project exploring explainable, data-informed cybersecuri
 - [CISA Known Exploited Vulnerabilities (KEV) Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)
 - [CISA KEV JSON feed](https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json)
 
-The app currently loads a local cleaned dataset when available; otherwise it attempts to fetch the official CISA KEV feed. Data availability depends on the local files and internet access. The separate defensive tool/control catalog is a curated starter dataset with links to official project or framework sources; its matching scores are profile-tag overlap, not evidence of effectiveness.
+The app currently loads a local cleaned dataset when available; otherwise it attempts to fetch the official CISA KEV feed. Data availability depends on the local files and internet access. The separate defensive tool/control catalog is a curated starter dataset with official project/framework links; automated checks validate its required fields and HTTPS URL format, but do not independently audit the tools or guarantee every external link is reachable. Its matching scores are profile-tag overlap, not evidence of effectiveness.
 
 ## Run the Streamlit app locally
 
@@ -54,8 +54,8 @@ The app includes these pages:
 - **Dashboard:** catalog counts, data source, and exploratory charts.
 - **Security Profile:** capture environment context and defensive priorities for the current session.
 - **Recommendations:** search the KEV catalog, retrieve similar records, and inspect general defensive controls.
-- **Model Evaluation:** view saved ranking metrics when an evaluation CSV exists.
-- **Feedback & History:** record feedback and export it as CSV for the current session.
+- **Model Evaluation:** view saved exploratory ranking metrics, or calculate Precision@K, Recall@K, MAP@K, and NDCG@K from separate ranked-results and explicit relevance-judgment CSV files.
+- **Feedback & History:** record feedback in a local SQLite database, view the active session's history, and export it as CSV.
 - **Tool & Control Catalog:** browse sourced defensive tools and foundational controls; when a session profile exists, results are ordered using transparent tag-overlap scoring.
 
 If the app cannot reach CISA and no local dataset is available, the dashboard will explain that data could not be loaded. The app does not create fake metrics to fill the gap.
@@ -72,6 +72,7 @@ The app can read `data/processed/cisa_kev_cleaned.csv` if you place that output 
 - Compare preprocessing variants under the same evaluation protocol.
 - Do not invent model scores, user ratings, or experimental results.
 - The KEV feed is a vulnerability catalog, not a security-tool directory and not a source of user ratings.
+- Profile-match scores must not be used as relevance labels. For the human-judged evaluation interface, provide rankings with `method,item_id,rank` columns and a separate judgment file with `item_id,relevance` columns; judgments should be independently reviewed and documented.
 - Proxy relevance based on matching vendor/product fields is exploratory and is not human-judged recommendation quality.
 - Keep source links and explainability visible.
 - Treat this project as decision support; important security decisions require human review.
@@ -100,7 +101,7 @@ The app can read `data/processed/cisa_kev_cleaned.csv` if you place that output 
 
 ## Project status
 
-**In development.** The initial Streamlit dashboard, profile form, CVE similarity page, evaluation view, session feedback page, and sourced defensive tool/control catalog are in place. The catalog is an initial manually curated set and should be expanded and reviewed before drawing conclusions.
+**In development.** The Streamlit dashboard, profile form, CVE similarity page, catalog page, local SQLite persistence, and evaluation workflows are in place. GitHub Actions runs the pytest suite on pushes and pull requests. The catalog is an initial manually curated set; automated checks validate schemas and HTTPS formatting, not live URL availability or independent product quality. Review the CI run before treating a change as tested.
 
 ## License
 
