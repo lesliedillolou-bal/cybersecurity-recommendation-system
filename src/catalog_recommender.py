@@ -43,10 +43,20 @@ def recommend_tools(catalog: pd.DataFrame, profile: dict | None = None) -> pd.Da
         if matched_priorities:
             score += 3 * len(matched_priorities)
             reasons.append("Matches priorities: " + ", ".join(matched_priorities))
-        if environment and (environment in tool_environments or environment == "Not sure yet"):
-            score += 2
-            if environment != "Not sure yet":
+        if environment and environment != "Not sure yet":
+            # The profile form uses a single small-business/home-lab option while
+            # catalog entries may use "Small team" or the exact profile label.
+            environment_aliases = {
+                "Small business / home lab": {"Small business / home lab", "Small team"},
+                "Small team": {"Small team", "Small business / home lab"},
+            }
+            acceptable_environments = environment_aliases.get(environment, {environment})
+            if acceptable_environments & tool_environments:
+                score += 2
                 reasons.append(f"Environment match: {environment}")
+        if "Need cloud-native options" in constraints and ("Cloud" in tool_environments or "Hybrid" in tool_environments):
+            score += 1
+            reasons.append("Cloud/hybrid environment is listed as suitable")
         if "Prefer open-source tools" in constraints and "Open-source" in str(row.get("cost_model", "")):
             score += 2
             reasons.append("Open-source option")
