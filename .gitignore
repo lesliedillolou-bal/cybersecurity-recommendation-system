@@ -43,3 +43,8 @@ Thumbs.db
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local app profile and feedback database
+/data/app_state.sqlite3
+/data/app_state.sqlite3-shm
+/data/app_state.sqlite3-wal
