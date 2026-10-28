@@ -1,15 +1,17 @@
 # Cybersecurity Recommendation System
 
-A Python-based research project exploring machine-learning and recommendation techniques for suggesting relevant cybersecurity tools, defensive controls, and learning resources from public cybersecurity data.
+A Python-based research project exploring explainable, data-informed cybersecurity recommendations using public vulnerability data. The current prototype uses the CISA Known Exploited Vulnerabilities (KEV) catalog to find similar vulnerability records and suggest general defensive controls.
+
+> **Scope note:** The current app does not rank commercial cybersecurity products. Similarity scores are not probabilities, and general controls must be validated against your environment and authoritative remediation guidance.
 
 ## Project goals
 
 - Build a reproducible cybersecurity recommendation pipeline.
-- Study five preprocessing techniques and measure their effects.
-- Compare recommendation and machine-learning algorithms using consistent experiments.
-- Evaluate recommendation quality with ranking metrics such as Precision@5, Recall@5, MAP@5, and NDCG@5 where the dataset and relevance labels support them.
+- Study preprocessing and machine-learning approaches with documented experiments.
+- Evaluate recommendation quality with ranking metrics when a defensible relevance definition is available.
 - Explain recommendations and link them to trustworthy source information.
 - Deliver an interactive application using Streamlit.
+- Avoid fabricated user ratings or experimental results.
 
 ## Technology stack
 
@@ -20,31 +22,16 @@ A Python-based research project exploring machine-learning and recommendation te
 - **Visualization:** Plotly, Matplotlib
 - **Testing:** pytest
 
-## Planned data sources
+## Public data sources
 
 - [National Vulnerability Database (NVD)](https://nvd.nist.gov/)
 - [MITRE ATT&CK data and tools](https://attack.mitre.org/resources/attack-data-and-tools/)
 - [CISA Known Exploited Vulnerabilities (KEV) Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)
+- [CISA KEV JSON feed](https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json)
 
-Data-source terms and API requirements will be reviewed before ingestion. These sources do not inherently provide user ratings for recommendations, so relevance labels and evaluation assumptions will be documented rather than presented as real user behavior.
+The app currently loads a local cleaned dataset when available; otherwise it attempts to fetch the official CISA KEV feed. Data availability depends on the local files and internet access.
 
-## Planned repository structure
-
-```text
-.
-├── app/                 # Streamlit application
-├── data/                # Local data; raw data is not committed
-├── experiments/         # Reproducible model comparisons
-├── notebooks/           # Google Colab/Jupyter notebooks
-├── reports/             # Experiment summaries and figures
-├── src/                 # Reusable Python modules
-├── tests/               # Automated tests
-├── .gitignore
-├── requirements.txt
-└── README.md
-```
-
-## Getting started
+## Run the Streamlit app locally
 
 Python 3.10 or newer is recommended.
 
@@ -56,21 +43,60 @@ Python 3.10 or newer is recommended.
    pip install -r requirements.txt
    ```
 
-4. The application and data pipeline will be added incrementally as the project develops.
+4. From the repository root, start the app:
 
-To use Google Colab, open a notebook from the `notebooks/` directory in Colab or upload it to your Google Drive.
+   ```bash
+   streamlit run app/Home.py
+   ```
+
+The app includes these pages:
+
+- **Dashboard:** catalog counts, data source, and exploratory charts.
+- **Security Profile:** capture environment context and defensive priorities for the current session.
+- **Recommendations:** search the KEV catalog, retrieve similar records, and inspect general defensive controls.
+- **Model Evaluation:** view saved ranking metrics when an evaluation CSV exists.
+- **Feedback & History:** record feedback and export it as CSV for the current session.
+
+If the app cannot reach CISA and no local dataset is available, the dashboard will explain that data could not be loaded. The app does not create fake metrics to fill the gap.
+
+## Google Colab research workflow
+
+Open the notebook in `notebooks/` using Google Colab, or upload the complete project notebook to Colab. Run the notebook to download the catalog, clean and explore records, fit TF-IDF, compare retrieval approaches, calculate exploratory ranking metrics, and save artifacts.
+
+The app can read `data/processed/cisa_kev_cleaned.csv` if you place that output in the repository's local working tree. The evaluation page can read `experiments/ranking_evaluation.csv` or accept an uploaded copy. Large datasets and generated model binaries are intentionally excluded by `.gitignore`.
 
 ## Research and evaluation principles
 
-- Split data before fitting transformations to prevent data leakage.
+- Fit preprocessing transformations only on appropriate training data when conducting supervised experiments.
 - Compare preprocessing variants under the same evaluation protocol.
 - Do not invent model scores, user ratings, or experimental results.
-- Report limitations and use source-linked explanations for recommendations.
+- The KEV feed is a vulnerability catalog, not a security-tool directory and not a source of user ratings.
+- Proxy relevance based on matching vendor/product fields is exploratory and is not human-judged recommendation quality.
+- Keep source links and explainability visible.
 - Treat this project as decision support; important security decisions require human review.
+
+## Repository structure
+
+```text
+.
+├── app/
+│   ├── Home.py
+│   ├── utils.py
+│   └── pages/
+├── data/                # Local data; raw/processed data is not committed
+├── experiments/         # Reproducible model comparisons
+├── notebooks/           # Google Colab/Jupyter notebooks
+├── reports/             # Experiment summaries and figures
+├── src/                 # Reusable research modules
+├── tests/               # Automated tests
+├── .gitignore
+├── requirements.txt
+└── README.md
+```
 
 ## Project status
 
-**In development.** Dataset preparation, baseline models, evaluation, and the Streamlit interface are planned next.
+**In development.** The initial Streamlit dashboard and pages are in place. The next research phase is to build a sourced defensive-tool/control catalog and define a more rigorous relevance-review protocol before claiming tool-level recommendation performance.
 
 ## License
 
