@@ -29,7 +29,7 @@ A Python-based research project exploring explainable, data-informed cybersecuri
 - [CISA Known Exploited Vulnerabilities (KEV) Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)
 - [CISA KEV JSON feed](https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json)
 
-The app currently loads a local cleaned dataset when available; otherwise it attempts to fetch the official CISA KEV feed. Data availability depends on the local files and internet access. The separate defensive tool/control catalog is a curated starter dataset with official project/framework links; automated checks validate its required fields and HTTPS URL format, but do not independently audit the tools or guarantee every external link is reachable. Its matching scores are profile-tag overlap, not evidence of effectiveness.
+The app currently loads a local cleaned dataset when available; otherwise it attempts to fetch the official CISA KEV feed. Data availability depends on the local files and internet access. The separate defensive tool/control catalog is a curated starter dataset with official project/framework links; automated checks validate its required fields and HTTPS URL format, but do not independently audit the tools or guarantee every external link is reachable. Its matching scores are profile-tag overlap, not evidence of effectiveness. To check current reachability manually, run `python scripts/check_catalog_links.py` from the repository root; some sites may block automated requests, so verify reported failures in a browser.
 
 ## Run the Streamlit app locally
 
