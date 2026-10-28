@@ -41,6 +41,18 @@ with tab_tools:
         shown = shown.loc[mask]
     ranked = recommend_tools(shown, profile)
     st.caption(f"{len(ranked)} tool(s) in this view")
+    if not ranked.empty:
+        export_tools = ranked[["name", "match_score"]].copy()
+        export_tools = export_tools.rename(columns={"name": "item_id"})
+        export_tools.insert(0, "rank", range(1, len(export_tools) + 1))
+        export_tools.insert(0, "method", "profile_tag_match" if profile else "catalog_order")
+        st.download_button(
+            "Export ranked tools for evaluation",
+            data=export_tools[["method", "item_id", "rank", "match_score"]].to_csv(index=False).encode("utf-8"),
+            file_name="ranked_defensive_tools.csv",
+            mime="text/csv",
+        )
+        st.caption("The exported match_score is a ranking explanation only; it is not a relevance label. Use separate reviewer judgments in Model Evaluation.")
     for _, tool in ranked.iterrows():
         with st.container(border=True):
             header, score_col = st.columns([5, 1])
@@ -71,6 +83,18 @@ with tab_controls:
             shown_controls["priority_tags"].astype(str)
         ).str.casefold().str.contains(control_search.strip().casefold(), regex=False, na=False)
         shown_controls = shown_controls.loc[mask]
+    if not shown_controls.empty:
+        export_controls = shown_controls[["control_name", "match_score"]].copy()
+        export_controls = export_controls.rename(columns={"control_name": "item_id"})
+        export_controls.insert(0, "rank", range(1, len(export_controls) + 1))
+        export_controls.insert(0, "method", "profile_tag_match" if profile else "catalog_order")
+        st.download_button(
+            "Export ranked controls for evaluation",
+            data=export_controls[["method", "item_id", "rank", "match_score"]].to_csv(index=False).encode("utf-8"),
+            file_name="ranked_security_controls.csv",
+            mime="text/csv",
+        )
+        st.caption("The exported match_score is not ground-truth relevance. Evaluate only against separate explicit judgments.")
     for _, control in shown_controls.iterrows():
         with st.container(border=True):
             header, score_col = st.columns([5, 1])
