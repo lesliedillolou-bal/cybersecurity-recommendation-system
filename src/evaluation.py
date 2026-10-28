@@ -38,6 +38,15 @@ def evaluate_judged_rankings(
         raise ValueError("relevance values must be non-negative")
     if judgment_data["item_id"].duplicated().any():
         raise ValueError("judgments must have one row per item_id")
+    ranked_items = set(rank_data["item_id"].astype(str))
+    judged_items = set(judgment_data["item_id"].astype(str))
+    missing_judgments = sorted(ranked_items - judged_items)
+    if missing_judgments:
+        sample = ", ".join(missing_judgments[:5])
+        raise ValueError(
+            "every ranked item must have an explicit relevance judgment; "
+            f"missing {len(missing_judgments)} item(s), including: {sample}"
+        )
     relevance_map = dict(zip(judgment_data["item_id"].astype(str), judgment_data["relevance"].astype(float)))
     relevant_total = sum(value > 0 for value in relevance_map.values())
     output = []
