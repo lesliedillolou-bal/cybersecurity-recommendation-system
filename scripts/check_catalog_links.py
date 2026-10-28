@@ -24,6 +24,7 @@ HEADERS = {"User-Agent": "CybersecurityRecommendationSystem-source-check/1.0"}
 
 def main() -> int:
     urls: list[tuple[str, str]] = []
+    failed = False
     for path, columns in CATALOGS:
         frame = pd.read_csv(path, keep_default_na=False)
         for column in columns:
@@ -35,10 +36,10 @@ def main() -> int:
                 label = f"{path.relative_to(ROOT)}:{row_number}:{column}"
                 if not url.startswith("https://"):
                     print(f"FAIL {label} {url!r} (expected HTTPS URL)")
+                    failed = True
                     continue
                 urls.append((label, url))
 
-    failed = False
     with requests.Session() as session:
         session.headers.update(HEADERS)
         for label, url in urls:
