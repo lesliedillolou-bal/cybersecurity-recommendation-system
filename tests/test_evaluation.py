@@ -33,3 +33,14 @@ def test_evaluation_rejects_duplicate_judgments():
     ])
     with pytest.raises(ValueError, match="one row per item_id"):
         evaluate_judged_rankings(rankings, judgments)
+
+
+
+def test_evaluation_requires_judgment_for_every_ranked_item():
+    rankings = pd.DataFrame([
+        {"method": "A", "item_id": "x", "rank": 1},
+        {"method": "A", "item_id": "y", "rank": 2},
+    ])
+    judgments = pd.DataFrame([{"item_id": "x", "relevance": 1}])
+    with pytest.raises(ValueError, match="every ranked item"):
+        evaluate_judged_rankings(rankings, judgments)
