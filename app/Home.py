@@ -24,8 +24,8 @@ if df.empty:
 st.caption(f"Data source: {source_label}")
 cols = st.columns(4)
 cols[0].metric("Catalog records", f"{len(df):,}")
-cols[1].metric("Unique vendors", f"{df['vendor'].replace('', pd.NA).nunique():,}")
-cols[2].metric("Unique products", f"{df['product'].replace('', pd.NA).nunique():,}")
+cols[1].metric("Unique vendors", f"{df.loc[df['vendor'].astype(str).str.strip().ne(''), 'vendor'].nunique():,}")
+cols[2].metric("Unique products", f"{df.loc[df['product'].astype(str).str.strip().ne(''), 'product'].nunique():,}")
 cols[3].metric("Records with required action", f"{int(df['required_action'].astype(str).str.strip().ne('').sum()):,}")
 
 left, right = st.columns(2)
