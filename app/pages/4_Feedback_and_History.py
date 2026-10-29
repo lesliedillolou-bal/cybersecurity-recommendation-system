@@ -8,9 +8,11 @@ import streamlit as st
 
 APP_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(APP_DIR))
+from utils import apply_app_theme
 from storage import clear_feedback, list_feedback, save_feedback
 
 st.set_page_config(page_title="Feedback & History", page_icon="🗂️", layout="wide")
+apply_app_theme()
 st.title("🗂️ Feedback & History")
 st.write("Record your review of recommendations and export your saved history.")
 st.caption("Avoid entering secrets, personal data, or confidential incident details.")
