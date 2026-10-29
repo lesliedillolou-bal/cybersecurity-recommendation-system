@@ -26,3 +26,26 @@ jobs:
           pip install -r requirements.txt
       - name: Run tests
         run: pytest -q
+      - name: Compile application and source files
+        run: python -m compileall -q app src scripts tests
+      - name: Smoke-test Streamlit startup
+        env:
+          CYBERSECURITY_APP_DB: ${{ runner.temp }}/cybersecurity-app-state.sqlite3
+        run: |
+          streamlit run app/Home.py --server.headless true --server.port 8501 > "${{ runner.temp }}/streamlit.log" 2>&1 &
+          APP_PID=$!
+          trap 'kill "$APP_PID" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8501/_stcore/health; then
+              echo "Streamlit health endpoint responded."
+              exit 0
+            fi
+            if ! kill -0 "$APP_PID" 2>/dev/null; then
+              cat "${{ runner.temp }}/streamlit.log"
+              exit 1
+            fi
+            sleep 1
+          done
+          cat "${{ runner.temp }}/streamlit.log"
+          echo "Streamlit did not become healthy within 30 seconds."
+          exit 1
