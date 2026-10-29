@@ -233,3 +233,19 @@ def apply_app_theme():
         """,
         unsafe_allow_html=True,
     )
+    st.sidebar.markdown(
+        """
+        <div style="padding: 10px 4px 18px 4px; margin-bottom: 12px; border-bottom: 1px solid rgba(148,163,184,.18);">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="background:linear-gradient(135deg,#0f9f91,#164e63); width:42px; height:42px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:23px;">🛡️</div>
+            <div>
+              <div style="font-size:14px; font-weight:800; letter-spacing:.02em; color:#f3f7ff;">CYBER INTELLIGENCE</div>
+              <div style="font-size:11px; color:#9fb0c7; margin-top:3px;">DEFENSIVE RESEARCH WORKSPACE</div>
+            </div>
+          </div>
+          <div style="margin-top:14px; display:inline-block; padding:5px 9px; border-radius:999px; border:1px solid rgba(45,212,191,.24); background:rgba(45,212,191,.08); color:#80f1df; font-size:10px; font-weight:700; letter-spacing:.08em;">● RESEARCH PROTOTYPE</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
