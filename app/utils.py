@@ -117,3 +117,119 @@ def defensive_controls(record):
          "Why it may help":"Review relevant logs, alerts, and response procedures for affected assets.",
          "Evidence from catalog":"General defensive guidance; validate against local telemetry and risk."},
     ]
+
+
+def apply_app_theme():
+    """Apply the shared, accessible visual theme across every Streamlit page."""
+    st.markdown(
+        """
+        <style>
+        :root {
+            --cyber-bg: #0b1220;
+            --cyber-panel: #111c2f;
+            --cyber-panel-soft: #15233a;
+            --cyber-border: rgba(148, 163, 184, 0.18);
+            --cyber-text: #e7eef8;
+            --cyber-muted: #9fb0c7;
+            --cyber-teal: #2dd4bf;
+            --cyber-blue: #60a5fa;
+        }
+        .stApp {
+            background:
+                radial-gradient(ellipse at 12% 0%, rgba(45, 212, 191, 0.08), transparent 34%),
+                radial-gradient(ellipse at 92% 4%, rgba(96, 165, 250, 0.09), transparent 30%),
+                var(--cyber-bg);
+            color: var(--cyber-text);
+        }
+        [data-testid="stHeader"] { background: rgba(11, 18, 32, 0.82); }
+        [data-testid="stSidebar"] {
+            background: #080f1c;
+            border-right: 1px solid var(--cyber-border);
+        }
+        [data-testid="stSidebar"] * { color: var(--cyber-text); }
+        .block-container { padding-top: 2rem; padding-bottom: 3rem; max-width: 1440px; }
+        h1, h2, h3 { color: #f3f7ff !important; letter-spacing: -0.025em; }
+        h1 { font-weight: 760 !important; }
+        p, li, label, .stCaption, [data-testid="stMarkdownContainer"] { color: var(--cyber-text); }
+        [data-testid="stCaptionContainer"], small { color: var(--cyber-muted) !important; }
+        [data-testid="stMetric"] {
+            background: linear-gradient(145deg, rgba(21,35,58,.96), rgba(15,27,45,.96));
+            border: 1px solid var(--cyber-border);
+            border-radius: 16px;
+            padding: 18px 20px;
+            box-shadow: 0 10px 28px rgba(0,0,0,.12);
+        }
+        [data-testid="stMetricLabel"] { color: var(--cyber-muted) !important; }
+        [data-testid="stMetricValue"] { color: #f3f7ff !important; font-weight: 750; }
+        [data-testid="stVerticalBlockBorderWrapper"] {
+            border-color: var(--cyber-border) !important;
+            border-radius: 16px !important;
+            background: rgba(17, 28, 47, 0.62);
+        }
+        div[data-baseweb="tab-list"] { gap: 8px; }
+        button[data-baseweb="tab"] {
+            border-radius: 10px 10px 0 0;
+            padding: 10px 16px;
+        }
+        .stButton > button, .stDownloadButton > button, .stFormSubmitButton > button {
+            border-radius: 10px;
+            border: 1px solid rgba(45,212,191,.42);
+            font-weight: 650;
+            transition: all .16s ease;
+        }
+        .stButton > button[kind="primary"], .stFormSubmitButton > button[kind="primary"] {
+            background: linear-gradient(135deg, #0f9f91, #0d9488);
+            color: #ffffff;
+        }
+        .stButton > button:hover, .stDownloadButton > button:hover {
+            border-color: var(--cyber-teal);
+            transform: translateY(-1px);
+        }
+        input, textarea, [data-baseweb="select"] > div {
+            border-radius: 10px !important;
+        }
+        [data-testid="stDataFrame"], [data-testid="stTable"] {
+            border: 1px solid var(--cyber-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        [data-testid="stAlert"] { border-radius: 12px; }
+        hr { border-color: var(--cyber-border); }
+        a { color: var(--cyber-teal) !important; }
+        .cyber-eyebrow {
+            color: var(--cyber-teal);
+            font-size: .78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .16em;
+            margin-bottom: .5rem;
+        }
+        .cyber-hero {
+            background: linear-gradient(120deg, rgba(17,28,47,.97), rgba(18,43,62,.92));
+            border: 1px solid rgba(45,212,191,.24);
+            border-radius: 22px;
+            padding: 30px 32px;
+            margin: 8px 0 24px 0;
+            box-shadow: 0 18px 50px rgba(0,0,0,.18);
+        }
+        .cyber-hero h1 { margin: 0 0 12px 0; font-size: clamp(2rem, 4vw, 3.25rem); }
+        .cyber-hero p { color: #b9c8db; max-width: 760px; line-height: 1.7; margin-bottom: 0; }
+        .cyber-chip {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(45,212,191,.10);
+            border: 1px solid rgba(45,212,191,.25);
+            color: #80f1df;
+            font-size: .76rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+        @media (max-width: 700px) {
+            .block-container { padding-top: 1rem; }
+            .cyber-hero { padding: 22px; border-radius: 16px; }
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
