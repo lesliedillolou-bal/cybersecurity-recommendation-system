@@ -6,9 +6,11 @@ import streamlit as st
 
 APP_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(APP_DIR))
+from utils import apply_app_theme
 from storage import load_profile, save_profile
 
 st.set_page_config(page_title="Security Profile", page_icon="🧩", layout="wide")
+apply_app_theme()
 st.title("🧩 Security Profile")
 st.write("Set the context that should guide your review of defensive recommendations.")
 st.caption("Do not enter passwords, API keys, confidential incident details, or other sensitive information.")
