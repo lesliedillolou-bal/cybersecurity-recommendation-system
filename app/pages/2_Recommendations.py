@@ -5,9 +5,10 @@ import streamlit as st
 
 APP_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(APP_DIR))
-from utils import load_catalog, recommend_similar, defensive_controls
+from utils import apply_app_theme, load_catalog, recommend_similar, defensive_controls
 
 st.set_page_config(page_title="Recommendations", page_icon="🔎", layout="wide")
+apply_app_theme()
 st.title("🔎 Recommendations")
 st.write("Find similar entries in the CISA KEV catalog and review general defensive controls.")
 df, source_label, load_error = load_catalog()
