@@ -9,9 +9,11 @@ APP_DIR = Path(__file__).resolve().parents[1]
 ROOT_DIR = APP_DIR.parent
 sys.path.insert(0, str(APP_DIR))
 sys.path.insert(0, str(ROOT_DIR))
+from utils import apply_app_theme
 from src.evaluation import evaluate_judged_rankings
 
 st.set_page_config(page_title="Model Evaluation", page_icon="📊", layout="wide")
+apply_app_theme()
 st.title("📊 Model Evaluation")
 st.write("Review saved experiments or evaluate ranked recommendations against explicit relevance judgments.")
 st.caption("This page does not invent metrics. Profile-match scores are not ground truth and are never used as relevance labels.")
