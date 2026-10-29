@@ -6,10 +6,13 @@ import streamlit as st
 
 APP_DIR = Path(__file__).resolve().parents[1]
 ROOT_DIR = APP_DIR.parent
+sys.path.insert(0, str(APP_DIR))
 sys.path.insert(0, str(ROOT_DIR))
+from utils import apply_app_theme
 from src.catalog_recommender import load_control_catalog, load_tool_catalog, recommend_controls, recommend_tools
 
 st.set_page_config(page_title="Tool & Control Catalog", page_icon="🧰", layout="wide")
+apply_app_theme()
 st.title("🧰 Defensive Tool & Control Catalog")
 st.write("Explore a curated starter list of defensive security tools and foundational controls with official source links.")
 st.warning(
